@@ -5,7 +5,6 @@ import com.example.springmail.dto.EmailDto;
 import java.util.List;
 
 public interface EmailInboxApi {
-    List<EmailDto> getInbox();
-
+    List<EmailDto> getEmailFromFolder(String folderName);
     EmailDto getEmail(Integer id);
 }
