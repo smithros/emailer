@@ -1,0 +1,58 @@
+<head>
+    <title>SEND</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="topnav">
+    <a th:href="@{/sendEmail}">Send an email</a>
+    <a th:href="@{/inbox}">INBOX</a>
+    <a th:href="@{/sent}">SENT</a>
+    <a th:href="@{/}">HOME</a>
+</div>
+
+<h2>Send e-mail to someone@example.com:</h2>
+<form method="post" th:href="@{/sendEmail}">
+    <label for="to">To:</label><br>
+    <input id="to" type="text" name="to" placeholder="someone@example.com" size>
+    <br>
+    <label for="subject">Subject:</label><br>
+    <input id="subject" type="text" name="subject" placeholder="Subject">
+    <br>
+    <label for="text">Text</label><br>
+    <input style="height:200px;width:500px" id="text" type="text" name="text" placeholder="Email text"><br><br>
+    <input type="submit" value="Send Email">
+    <input type="reset" value="Reset">
+</form>
+</body>
+

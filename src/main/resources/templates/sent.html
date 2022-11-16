@@ -1,0 +1,66 @@
+<head>
+    <title>SENT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="topnav">
+    <a th:href="@{/sendEmail}">Send an email</a>
+    <a th:href="@{/inbox}">INBOX</a>
+    <a th:href="@{/sent}">SENT</a>
+    <a th:href="@{/}">HOME</a>
+</div>
+
+</body>
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Text</th>
+        <th>Subject</th>
+        <th>SentDate</th>
+        <th>ReceivedDate</th>
+    </tr>
+<tr th:each="mail:${mails}">
+    <td th:text="${mail.id}"></td>
+    <td th:text="${mail.from}"></td>
+    <td th:text="${mail.to}"></td>
+    <td th:text="${mail.subject}"></td>
+    <td th:text="${#strings.length(mail.text)} >= 40 ? ${#strings.substring(mail.text, 0, 40)}+'...': ${mail.text}"></td>
+    <td th:text="${mail.sentDate}"></td>
+    <td th:text="${mail.receivedDate}"></td>
+</tr>
+
+</table>

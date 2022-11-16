@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class EmailInboxService implements EmailInboxApi {
 
-    private static final int EMAILS_SHOWN = 30;
+    private static final int EMAILS_SHOWN = 10;
     private static final String TEXT_PLAIN = "text/plain";
     private static final String MULTIPART = "multipart/*";
     private static final String EMPTY = "";
@@ -67,8 +67,8 @@ public class EmailInboxService implements EmailInboxApi {
             this.mailList.add(
                 EmailDto.builder()
                     .id(msg.getMessageNumber())
-                    .from(Arrays.toString(msg.getFrom()))
-                    .to(Arrays.toString(msg.getAllRecipients()))
+                    .from(this.replace(Arrays.toString(msg.getFrom())))
+                    .to(this.replace(Arrays.toString(msg.getAllRecipients())))
                     .text(this.getTextFromMessage(msg))
                     .subject(msg.getSubject())
                     .sentDate(msg.getSentDate())
@@ -77,6 +77,10 @@ public class EmailInboxService implements EmailInboxApi {
             );
         }
         return this.mailList;
+    }
+
+    private String replace(final String in) {
+        return in.replaceAll("\\[","").replaceAll("]","");
     }
 
     @Override

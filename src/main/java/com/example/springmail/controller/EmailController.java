@@ -6,12 +6,11 @@ import com.example.springmail.service.EmailInboxService;
 import com.example.springmail.service.api.EmailServiceApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import java.util.Optional;
 
-@RestController
+@Controller
 public class EmailController implements EmailControllerApi {
 
     private static final String GMAIL_SENT_MAIL = "[Gmail]/Sent Mail";
@@ -26,22 +25,21 @@ public class EmailController implements EmailControllerApi {
     }
 
     @Override
-    public void sendEmail(final String to, final String subject, final String text) {
+    public String sendEmail(final String to, final String subject, final String text) {
         this.emailServiceApi.sendEmail(to, subject, text);
+        return "send-email";
     }
 
     @Override
-    public ResponseEntity<List<EmailDto>> getInbox() {
-        return Optional.ofNullable(this.emailInboxService.getEmailFromFolder(GMAIL_INBOX))
-                .map(ResponseEntity::ok)
-                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    public String getInbox(final Model model) {
+        model.addAttribute("mails", this.emailInboxService.getEmailFromFolder(GMAIL_INBOX));
+        return "inbox";
     }
 
     @Override
-    public ResponseEntity<List<EmailDto>> getSent() {
-        return Optional.ofNullable(this.emailInboxService.getEmailFromFolder(GMAIL_SENT_MAIL))
-                .map(ResponseEntity::ok)
-                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    public String getSent(final Model model) {
+        model.addAttribute("mails", this.emailInboxService.getEmailFromFolder(GMAIL_SENT_MAIL));
+        return "sent";
     }
 
     @Override
