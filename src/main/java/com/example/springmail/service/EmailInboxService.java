@@ -3,6 +3,7 @@ package com.example.springmail.service;
 import com.example.springmail.dto.EmailDto;
 import com.example.springmail.service.api.EmailInboxApi;
 import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,6 @@ import javax.mail.internet.MimeMultipart;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 @Service
 public class EmailInboxService implements EmailInboxApi {
@@ -21,41 +21,50 @@ public class EmailInboxService implements EmailInboxApi {
     private static final String MULTIPART = "multipart/*";
     private static final String EMPTY = "";
 
+    private final Session session;
+
     @Value("${username}")
     private String userName;
+
     @Value("${password}")
     private String password;
 
+    private List<EmailDto> mailList = new ArrayList<>();
+
+    @Autowired
+    public EmailInboxService(final Session session) {
+        this.session = session;
+    }
+
     @Override
     public List<EmailDto> getEmailFromFolder(final String folderName) {
-        List<EmailDto> mailList = new ArrayList<>();
+        this.mailList = new ArrayList<>();
         try {
-            final Store store = this.getSession().getStore("imaps");
+            final Store store = this.session.getStore("imaps");
             store.connect("pop.gmail.com", userName, password);
 
             final Folder emailFolder = store.getFolder(folderName);
             emailFolder.open(Folder.READ_ONLY);
 
             final Message[] messages = emailFolder.getMessages();
-            System.out.printf("Messages in folder: %d%n", messages.length);
+            System.out.printf("Messages in %s folder: %d%n", folderName, messages.length);
 
-            mailList = this.getMailList(messages);
+            this.mailList = this.getMailList(messages);
 
             emailFolder.close(true);
             store.close();
 
-            return mailList;
+            return this.mailList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return mailList;
+        return this.mailList;
     }
 
     private List<EmailDto> getMailList(final Message[] messages) throws Exception {
-        final List<EmailDto> mailList = new ArrayList<>();
         for (int i = messages.length - 1; i >= messages.length - EMAILS_SHOWN; i--) {
             final Message msg = messages[i];
-            mailList.add(
+            this.mailList.add(
                 EmailDto.builder()
                     .id(msg.getMessageNumber())
                     .from(Arrays.toString(msg.getFrom()))
@@ -67,21 +76,12 @@ public class EmailInboxService implements EmailInboxApi {
                     .build()
             );
         }
-        return mailList;
+        return this.mailList;
     }
 
     @Override
-    public EmailDto getEmail(Integer id) {
-        return null;
-    }
-
-    private Session getSession() {
-        final Properties properties = new Properties();
-        properties.put("mail.pop3.host", "pop.gmail.com");
-        properties.put("mail.pop3.port", "995");
-        properties.put("mail.pop3.starttls.enable", "true");
-        properties.put("mail.store.protocol", "imaps");
-        return Session.getDefaultInstance(properties);
+    public EmailDto getEmail(final Integer id) {
+        return this.mailList.get(id);
     }
 
     private String getTextFromMessage(final Message message) throws Exception {

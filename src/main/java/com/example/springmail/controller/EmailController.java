@@ -16,16 +16,17 @@ public class EmailController implements EmailControllerApi {
 
     private static final String GMAIL_SENT_MAIL = "[Gmail]/Sent Mail";
     private static final String GMAIL_INBOX = "INBOX";
+
     private final EmailServiceApi emailServiceApi;
     private final EmailInboxService emailInboxService;
 
-    public EmailController(final EmailServiceApi emailServiceApi, EmailInboxService emailInboxService) {
+    public EmailController(final EmailServiceApi emailServiceApi, final EmailInboxService emailInboxService) {
         this.emailServiceApi = emailServiceApi;
         this.emailInboxService = emailInboxService;
     }
 
     @Override
-    public void sendEmail(String to, String subject, String text) {
+    public void sendEmail(final String to, final String subject, final String text) {
         this.emailServiceApi.sendEmail(to, subject, text);
     }
 
@@ -44,7 +45,9 @@ public class EmailController implements EmailControllerApi {
     }
 
     @Override
-    public ResponseEntity<EmailDto> getEmailById(Integer id) {
-        return null;
+    public ResponseEntity<EmailDto> getEmailById(final Integer id) {
+        return Optional.ofNullable(this.emailInboxService.getEmail(id))
+                .map(ResponseEntity::ok)
+                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }

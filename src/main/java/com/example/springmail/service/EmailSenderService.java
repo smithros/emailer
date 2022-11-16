@@ -10,16 +10,17 @@ import org.springframework.stereotype.Service;
 public class EmailSenderService implements EmailServiceApi {
 
     final JavaMailSender mailSender;
+
     @Value("${username}")
     private String userName;
 
-    public EmailSenderService(JavaMailSender mailSender) {
+    public EmailSenderService(final JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
     @Override
-    public void sendEmail(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
+    public void sendEmail(final String to, final String subject, final String text) {
+        final SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(userName);
         message.setTo(to);
         message.setSubject(subject);

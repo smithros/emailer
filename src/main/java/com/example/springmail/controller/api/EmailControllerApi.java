@@ -12,7 +12,7 @@ import java.util.List;
 public interface EmailControllerApi {
 
     @PostMapping("/sendEmail")
-    void sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text);
+    void sendEmail(@RequestParam final String to, @RequestParam final String subject, @RequestParam final String text);
 
     @GetMapping("/getInbox")
     ResponseEntity<List<EmailDto>> getInbox();
@@ -21,5 +21,5 @@ public interface EmailControllerApi {
     ResponseEntity<List<EmailDto>> getSent();
 
     @GetMapping("/email/{id}")
-    ResponseEntity<EmailDto> getEmailById(@PathVariable Integer id);
+    ResponseEntity<EmailDto> getEmailById(@PathVariable final Integer id);
 }
