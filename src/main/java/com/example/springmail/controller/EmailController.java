@@ -1,14 +1,10 @@
 package com.example.springmail.controller;
 
 import com.example.springmail.controller.api.EmailControllerApi;
-import com.example.springmail.dto.EmailDto;
 import com.example.springmail.service.EmailInboxService;
 import com.example.springmail.service.api.EmailServiceApi;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import java.util.Optional;
 
 @Controller
 public class EmailController implements EmailControllerApi {
@@ -43,9 +39,8 @@ public class EmailController implements EmailControllerApi {
     }
 
     @Override
-    public ResponseEntity<EmailDto> getEmailById(final Integer id) {
-        return Optional.ofNullable(this.emailInboxService.getEmail(id))
-                .map(ResponseEntity::ok)
-                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    public String getEmailById(final Integer id, final Model model) {
+        model.addAttribute("mail", this.emailInboxService.getEmail(id));
+        return "get-email";
     }
 }

@@ -25,11 +25,6 @@
             background-color: #ddd;
             color: black;
         }
-
-        .topnav a.active {
-            background-color: #04AA6D;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -45,22 +40,19 @@
 
 <table>
     <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>From</th>
         <th>To</th>
-        <th>Text</th>
         <th>Subject</th>
-        <th>SentDate</th>
-        <th>ReceivedDate</th>
+        <th>Text</th>
+        <th>Received Date</th>
     </tr>
 <tr th:each="mail:${mails}">
-    <td th:text="${mail.id}"></td>
+    <td><a th:href="@{/email/{id}(id=${mail.id})}">View</a></td>
     <td th:text="${mail.from}"></td>
     <td th:text="${mail.to}"></td>
     <td th:text="${mail.subject}"></td>
     <td th:text="${#strings.length(mail.text)} >= 40 ? ${#strings.substring(mail.text, 0, 40)}+'...': ${mail.text}"></td>
-    <td th:text="${mail.sentDate}"></td>
     <td th:text="${mail.receivedDate}"></td>
 </tr>
-
 </table>

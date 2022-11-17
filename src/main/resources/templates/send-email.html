@@ -25,11 +25,6 @@
             background-color: #ddd;
             color: black;
         }
-
-        .topnav a.active {
-            background-color: #04AA6D;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -40,19 +35,22 @@
     <a th:href="@{/sent}">SENT</a>
     <a th:href="@{/}">HOME</a>
 </div>
-
-<h2>Send e-mail to someone@example.com:</h2>
+<div style="text-align: center;">
+<h2>Send an e-mail to someone: </h2>
 <form method="post" th:href="@{/sendEmail}">
-    <label for="to">To:</label><br>
-    <input id="to" type="text" name="to" placeholder="someone@example.com" size>
+    <label style="font-size: 20px" for="to">To:</label><br>
+    <input style="width:300px;font-size:15px" id="to" type="email" name="to" placeholder="someone@example.com">
     <br>
-    <label for="subject">Subject:</label><br>
-    <input id="subject" type="text" name="subject" placeholder="Subject">
     <br>
-    <label for="text">Text</label><br>
-    <input style="height:200px;width:500px" id="text" type="text" name="text" placeholder="Email text"><br><br>
-    <input type="submit" value="Send Email">
-    <input type="reset" value="Reset">
+    <label style="font-size: 20px" for="subject">Subject:</label><br>
+    <input style="width:300px;font-size:15px" id="subject" type="text" name="subject" placeholder="Subject">
+    <br>
+    <br>
+    <label style="font-size: 20px" for="text">Message:</label><br>
+    <input style="height:200px;width:500px;font-size: 15px" id="text" type="text" name="text" placeholder="Email text"><br><br>
+    <input style="font-size: 20px" type="submit" value="Send Email">
+    <input style="font-size: 20px" type="reset" value="Reset">
 </form>
+</div>
 </body>
 

@@ -85,7 +85,7 @@ public class EmailInboxService implements EmailInboxApi {
 
     @Override
     public EmailDto getEmail(final Integer id) {
-        return this.mailList.get(id);
+        return this.mailList.stream().filter(el -> el.getId().equals(id)).findFirst().orElse(null);
     }
 
     private String getTextFromMessage(final Message message) throws Exception {

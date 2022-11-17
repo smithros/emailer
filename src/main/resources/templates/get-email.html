@@ -25,11 +25,6 @@
             background-color: #ddd;
             color: black;
         }
-
-        .topnav a.active {
-            background-color: #04AA6D;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -40,3 +35,10 @@
     <a th:href="@{/sent}">SENT</a>
     <a th:href="@{/}">HOME</a>
 </div>
+<h2 th:text="${mail.subject}"></h2>
+<h3 th:text="${mail.from}"></h3>
+<h3 th:text="${mail.to}"></h3>
+<h3 th:text="${mail.text}"></h3>
+<br>
+<br>
+<h3 th:text="${mail.receivedDate}"></h3>
